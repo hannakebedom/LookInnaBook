@@ -2,3 +2,4 @@ source 'https://rubygems.org'
 
 gem 'pg', '1.2.3'
 gem 'rake'
+gem 'colorize'

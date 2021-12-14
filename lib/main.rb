@@ -1,9 +1,10 @@
 #!/usr/bin/ruby
-require_relative 'model'
+require_relative 'controller'
 
 def main
-    db = Model.new
-    db.display_instructors
+    # db = Model.new
+    # db.display_instructors
+    Controller.launch
 end
 
 main
