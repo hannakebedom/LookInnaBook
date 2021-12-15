@@ -41,7 +41,7 @@ class View
     def self.create_account
         # returns an array [customer, account(username and password)]
         puts "-------------------------------------------------------------"
-        puts "Create an Account: "
+        puts "Create an Account (Please fill out the following fields): "
         print "Username: "
         username = gets.chomp
         print "Password: "
@@ -61,7 +61,7 @@ class View
     end
 
     def self.login_error
-        puts "Login/account creation was unsuccessful, please try again!"
+        puts "Login/account creation was unsuccessful, please try again!".red
     end
 
     def self.customer_main_menu

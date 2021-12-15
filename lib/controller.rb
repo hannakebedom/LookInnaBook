@@ -3,7 +3,7 @@ require_relative 'model'
 require_relative 'account'
 require 'colorize'
 
-db = Model.new
+$db = Model.new
 
 class Controller
     def self.launch
@@ -31,10 +31,13 @@ end
 
 def login(account) # return boolean (successful or not?)
     puts "Logging in with your account . . ."
-    puts "Success!"
     $account = account
-    # check if username & password are valid
-    return true
+    if $db.login(account.username, account.password)
+        puts "Success!".green
+        return true
+    else
+        return false
+    end
 end
 
 def create_account(customer) # return boolean (successful or not?)

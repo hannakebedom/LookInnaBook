@@ -5,7 +5,22 @@ require 'pg'
 class Model
     begin
         def initialize()
-            @con = PG.connect :dbname => 'university', :user => 'postgres', :password => 'Oranges224'
+            @con = PG.connect :dbname => 'bookstore', :user => 'postgres', :password => 'Oranges224'
+        end
+
+        def login(username, password)
+            rs = @con.exec "SELECT COUNT(*) FROM account WHERE username=\'#{username}\' AND password=\'#{password}\'"
+            if rs[0] == 1
+                clear(rs)
+                return true
+            else
+                clear(rs)
+                return false
+            end
+        end
+
+        def create_account(customer)
+            
         end
 
         def search(title, author= nil, isbn = nil, genre = nil)
