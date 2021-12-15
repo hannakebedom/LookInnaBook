@@ -46,6 +46,8 @@ class View
         username = gets.chomp
         print "Password: "
         password = gets.chomp
+        print "Account Type (Customer or Owner): "
+        type = gets.chomp
         print "Name: "
         name = gets.chomp
         print "Address: "
@@ -57,7 +59,7 @@ class View
         print "Phone: "
         phone = gets.chomp
         puts "-------------------------------------------------------------"
-        return [Customer.new(name, address, card_number, email, phone), Account.new(username, password)]
+        return [Customer.new(name, address, card_number, email, phone), Account.new(username, password, type)]
     end
 
     def self.login_error

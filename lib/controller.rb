@@ -32,6 +32,8 @@ end
 def login(account) # return boolean (successful or not?)
     puts "Logging in with your account . . ."
     $account = account
+    puts account.username
+    puts account.password
     if $db.login(account.username, account.password)
         puts "Success!".green
         return true
@@ -42,9 +44,13 @@ end
 
 def create_account(customer) # return boolean (successful or not?)
     puts "Creating your account . . ."
-    puts "Success!"
-    $account = Account.new(customer.username, customer.password)
-    return true
+    $account = Account.new(customer[1].username, customer[1].password)
+    if $db.create_account(customer[1]) && $db.create_customer(customer[0])
+        puts "Success!".green
+        return true
+    else
+        return false
+    end
 end
 
 def customer_main_menu
@@ -87,8 +93,7 @@ end
 
 def get_search_results(query)
     puts "Getting search results for query '#{query}'"
-    results = ["(1) Harry Potter: The Philosopher's Stone", "(2) Beach Read", "(3) Zero to One"]
-    View.search_results(results)
+    View.search_results($db.search(query))
     customer_search_menu(query)
 end
 

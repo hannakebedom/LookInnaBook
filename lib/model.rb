@@ -1,6 +1,7 @@
 #!/usr/bin/ruby
 
 require 'pg'
+require_relative 'view'
 
 class Model
     begin
@@ -10,7 +11,7 @@ class Model
 
         def login(username, password)
             rs = @con.exec "SELECT COUNT(*) FROM account WHERE username=\'#{username}\' AND password=\'#{password}\'"
-            if rs[0] == 1
+            if rs[0]["count"].to_i > 0
                 clear(rs)
                 return true
             else
@@ -19,11 +20,34 @@ class Model
             end
         end
 
-        def create_account(customer)
-            
+        def create_account(account)
+            rs = @con.exec "INSERT INTO account values (\'#{account.username}\',\'#{account.password}\',\'#{account.type}\')"
+            if rs.result_status == 1
+                clear(rs)
+                return true
+            else
+                clear(rs)
+                return false
+            end
         end
 
-        def search(title, author= nil, isbn = nil, genre = nil)
+        def create_customer(customer)
+            rs = @con.exec "INSERT INTO customer(name, address, card_number, email, phone) values (\'#{customer.name}\', \'#{customer.address}\', \'#{customer.phone}\', \'#{customer.email}\', \'#{customer.phone}\')"
+            if rs.result_status == 1
+                clear(rs)
+                return true
+            else
+                clear(rs)
+                return false
+            end
+        end
+
+
+
+        def search(title)
+            rs = @con.exec "SELECT * FROM book WHERE (lower(title) LIKE lower(\'%#{title}%\'))";
+            puts rs.to_a
+            return rs.to_a
             # identify all books with the same title, author, isbn or genre
             # display this info on search page
 
@@ -75,7 +99,9 @@ class Model
         end
 
     rescue PG::Error => e
-
+        
+        # replace with more generic error eventually
+        View.login_error
         puts e.message 
         
     ensure
