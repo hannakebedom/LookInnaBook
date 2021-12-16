@@ -127,7 +127,7 @@ CREATE TABLE Manages
 
 CREATE TABLE Contains
     (cart_id    int,
-     isbn       int,
+     isbn       bigint,
      quantity   int,  
 	 PRIMARY KEY (cart_id, isbn),
      FOREIGN KEY (cart_id) references Cart
@@ -188,7 +188,17 @@ CREATE TABLE Book_Genre
 		on delete cascade
 	);
 
-
+CREATE TABLE Sales
+    (cart_id    int,
+     isbn       bigint,
+     quantity   int, 
+     date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+	 PRIMARY KEY (cart_id, isbn, date),
+     FOREIGN KEY (cart_id) references Cart
+		on delete cascade,
+     FOREIGN KEY (isbn) references Book
+		on delete cascade
+	);
 
 
 

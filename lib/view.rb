@@ -1,5 +1,6 @@
 require_relative 'account'
 require_relative 'customer'
+require_relative 'book'
 require 'colorize'
 
 # puts String.colors
@@ -34,8 +35,10 @@ class View
         username = gets.chomp
         print "Password: "
         password = gets.chomp
+        print "Account Type: "
+        type = gets.chomp
         puts "-------------------------------------------------------------"
-        return Account.new(username, password)
+        return Account.new(username, password, "owner")
     end
 
     def self.create_account
@@ -66,6 +69,7 @@ class View
         puts "Login/account creation was unsuccessful, please try again!".red
     end
 
+    # CUSTOMER FUNCTIONALITY
     def self.customer_main_menu
         num_options = 3
         puts "-------------------------------------------------------------"
@@ -94,9 +98,11 @@ class View
         return title
     end
 
-    def self.search_results(results)
-        results.each do |result|
-            puts result
+    def self.search_results(rs)
+        i = 0
+        rs.each do |row|
+            i += 1
+            puts "[#{i}] title: %s, pages: %s, price: %s" % [ row['title'], row['pages'], row['price']]
         end
     end
 
@@ -124,18 +130,23 @@ class View
         puts "Which book's details would you like to view? (please enter integer associated with book in search results)"
         puts "-------------------------------------------------------------"
         print "Enter your selection: "
-        choice = gets.chomp
+        choice = gets.chomp.to_i
     end
 
     def self.display_book_details(book)
         puts "-------------------------------------------------------------"
-        puts "Book Details"
-        puts "Isbn: "
-        puts "Title: "
-        puts "Description: "
-        puts "Pages: "
-        puts "Price: "
-        puts "Year Published: "
+        print "Isbn: ".blue
+        puts "#{book["isbn"]}"
+        print "Title: ".blue
+        puts "#{book["title"]}"
+        print "Description: ".blue
+        puts book["description"]
+        print "Pages: ".blue
+        puts book["pages"]
+        print "Price: ".blue
+        puts book["price"]
+        print "Year Published: "
+        puts book["year_published"]
     end
 
     def self.get_tracking_info
@@ -145,26 +156,39 @@ class View
         return id
     end
 
-    def self.display_tracking_information(order_id)
+    def self.display_tracking_information(order_id, status)
         puts "-------------------------------------------------------------"
         puts "Tracking information for order ##{order_id}:"
-        puts "Status: Out for delivery"
+        puts "Status: #{status}"
     end
 
     def self.get_book_selection
         puts "-------------------------------------------------------------"
-        print "Which book would you like to add to your cart?: "
-        title = gets.chomp
+        print "Which book would you like to add to your cart? "
+        index = gets.chomp.to_i
+        print "How many copies of this book would you like to add to your cart? "
+        quantity = gets.chomp.to_i
+        return [index, quantity]
     end
 
-    def self.checkout(account)
+    def self.checkout(rs)
         puts "-------------------------------------------------------------"
         puts "Welcome to Look Inna Book Checkout"
-        puts "You have the following items in your cart: "
-        puts "No. Items: 3 "
-        puts "Subtotal: $67.80 "
-        puts "Card: 143091437"
-        puts "Shipping Address: 112 Deercroft Avenue"
+        puts "You have the following items in your cart: ".magenta
+        i = 0
+        subtotal = 0
+        card_number = rs[0]['card_number']
+        address = rs[0]['address']
+
+        rs.each do |row|
+            i += 1
+            subtotal += row['price'].to_i
+            puts "[#{i}] title: %s, price: %s, quantity: %s" % [ row['title'], row['price'], row['quantity']]
+        end
+        puts "Total Number Items: #{i}"
+        puts "Subtotal:           #{subtotal}"
+        puts "Card:               #{card_number}"
+        puts "Shipping Address:   #{address}"
         puts "-------------------------------------------------------------"
         puts "Would you like to proceed with this purchase?"
         puts "(1) Yes"
@@ -172,6 +196,53 @@ class View
         print "Enter your selection: "
         response = gets.chomp.to_i
         return response == 1 ? true : false
+    end
+
+    # ADMIN FUNCTIONALITY
+    def self.admin_main_menu
+        num_options = 3
+        puts "-------------------------------------------------------------"
+        puts "Admin Main Menu: "
+        puts "  (1) Add a book"
+        puts "  (2) Remove a book"
+        puts "  (3) View Reports"
+        puts "  (0) Quit"
+        puts "-------------------------------------------------------------"
+        print "Enter your selection: "
+        choice = gets.chomp.to_i
+        while (choice < 0 || choice > num_options)
+            print "Enter your selection: "
+            choice = gets.chomp.to_i
+        end
+
+        return choice
+    end
+
+    def self.add_book
+        puts "-------------------------------------------------------------"
+        puts "Please enter the following information about the book you would like to add: "
+        print "Isbn: "
+        isbn = gets.chomp.to_i
+        print "Title: "
+        title = gets.chomp
+        print "Description: "
+        description = gets.chomp
+        print "Pages: "
+        pages = gets.chomp.to_i
+        print "Year Published: "
+        year = gets.chomp.to_i
+        print "Price: "
+        price = gets.chomp.to_i
+        print "How many of this book would you like to add?  "
+        quantity = gets.chomp.to_i
+        book = Book.new(isbn, title, description, pages, year, price, quantity)
+        return book
+    end
+
+    def self.remove_book
+        puts "-------------------------------------------------------------"
+        print "Please enter the isbn of the book you would like to remove:"
+        isbn = gets.chomp.to_i
     end
 
     def self.quit

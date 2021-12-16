@@ -84,7 +84,13 @@ insert into writes values (3, 9780486280615);
 
 -- relationship between publishers and books
 
+-- store
+insert into store(name, address) values ('Look Inna Book', '125 Riocan Ave.');
 
+-- books in store (quantity)
+insert into store_book(store_id, isbn, quantity) values (1, 9780744525021, 10);
+insert into store_book(store_id, isbn, quantity) values (1, 9780333791035, 10);
+insert into store_book(store_id, isbn, quantity) values (1, 9780486280615, 10);
 
 
 

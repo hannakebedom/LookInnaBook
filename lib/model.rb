@@ -42,47 +42,104 @@ class Model
             end
         end
 
-
-
         def search(title)
             rs = @con.exec "SELECT * FROM book WHERE (lower(title) LIKE lower(\'%#{title}%\'))";
-            puts rs.to_a
-            return rs.to_a
-            # identify all books with the same title, author, isbn or genre
-            # display this info on search page
-
-            # returns an array of books that meet criteria
+            return rs
         end
 
-        def book_details(title, author)
-            # get the author information, genre, publisher and no. of pages for a specific book
-
-            # returns all info for a particular book
+        def retrieve_cart(username)
+            rs = @con.exec "SELECT cart_id FROM manages WHERE username=\'#{username}\'";
+            
+            if rs.ntuples > 0
+                return rs[0]["cart_id"].to_i
+            else
+                clear(rs)
+                rs = @con.exec "INSERT INTO cart DEFAULT VALUES"
+                clear(rs)
+                rs = @con.exec "SELECT MAX(cart_id) FROM cart"
+                cart_id = rs[0]["max"].to_i
+                rs = @con.exec "INSERT INTO manages(cart_id, username) values(#{cart_id}, \'#{username}\')"
+                return cart_id
+            end
         end
 
-        def registered?(first_name, last_name)
-            # determine whether or not a customer is registered
+        def add_to_cart(cart_id, isbn, quantity)
+            # check that item is not already in cart before trying to insert it
+            rs = @con.exec "INSERT INTO contains values (#{cart_id}, #{isbn}, #{quantity})"
+            if rs.result_status == 1
+                clear(rs)
+                return true
+            else
+                clear(rs)
+                return false
+            end
         end
 
-        def register(first_name, last_name, shipping, billing)
-            # register a customer for an account before they checkout
+        def get_cart_items(username)
+            rs = @con.exec "SELECT * FROM (contains natural join manages) natural join book natural join customer_account natural join customer WHERE username=\'#{username}\'"
+            return rs
         end
 
-        def place_order(customer_id, book_id)
-            # place a customers order for a book 
+        def place_order(username)
+            rs = @con.exec "INSERT INTO orders(order_date, status) values (\'2021-12-15\', \'shipped\')"
+            clear(rs)
+            rs = @con.exec "SELECT MAX(order_id) FROM orders"
+            order_id = rs[0]["max"].to_i
+            clear(rs)
+            rs = @con.exec "INSERT INTO places(order_id, username) values (\'#{order_id}\',\'#{username}\')"
+            clear(rs)
         end
 
-        def track_order(order_num)
+        def record_sale(cart_id)
+            rs = @con.exec "INSERT INTO sales(cart_id, isbn, quantity) SELECT * FROM contains WHERE cart_id=\'#{cart_id}\'"
+            clear(rs)
+            rs = @con.exec "SELECT * FROM contains WHERE cart_id=\'#{cart_id}\'"
+            books = []
+            quantities = []
+            rs.each do |row|
+                books << "%s" % [row['isbn']]
+                quantities << "%s" % [row['quantity']]
+            end
+            # update store quantities
+            clear(rs)
+            books.each do |isbn|
+                quantities.each do |quantity|
+                    rs = @con.exec "SELECT quantity FROM store_book WHERE store_id = 1 AND isbn=#{isbn}"
+                    quantity = quantity.to_i
+                    current_quantity = rs[0]["quantity"].to_i
+                    clear(rs)
+                    rs = @con.exec "UPDATE store_book SET quantity=#{current_quantity-quantity} WHERE store_id = 1 AND isbn=#{isbn}"
+                    clear(rs)
+                end
+            end
+            # reset customer's cart
+            rs = @con.exec "DELETE FROM contains WHERE cart_id=\'#{cart_id}\'"
+            clear(rs)
+        end
+
+        def track_order(order_id)
             # returns the status of an order given the order number
+            rs = @con.exec "SELECT status FROM orders WHERE order_id = #{order_id}"
+            return rs[0]["status"]
         end
 
         # ADMIN
-        def add_book(title, author, isbn, genre)
-            # adds book to books table
+        def add_book(book)
+            # check if book exists in book table
+            puts "ISBN: #{book.isbn}"
+            rs = @con.exec "SELECT COUNT(*) FROM book WHERE isbn=\'#{book.isbn}\'"
+            if rs[0]["count"].to_i == 0
+                rs = @con.exec "INSERT INTO book values (#{book.isbn}, \'#{book.title}\', \'#{book.description}\', #{book.pages}, #{book.year}, #{book.price})" 
+            end
+            clear(rs)
+            rs = @con.exec "INSERT INTO store_book values (1, #{book.isbn}, #{book.quantity})"
+            clear(rs)
         end
 
-        def remove_book(title, author, isbn)
+        def remove_book(isbn)
             # removes a book from the books table
+            rs = @con.exec "DELETE FROM book WHERE isbn=#{isbn}"
+            clear(rs)
         end
 
         # TEST
