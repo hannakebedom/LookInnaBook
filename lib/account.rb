@@ -1,6 +1,6 @@
 class Account
-    attr_reader :username, :password, :type
-    def initialize(username, password, type = "")
+    attr_accessor :username, :password, :type
+    def initialize(username, password, type = "customer")
         @username = username
         @password = password
         @type = type

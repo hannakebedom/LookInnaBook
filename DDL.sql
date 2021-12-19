@@ -200,7 +200,19 @@ CREATE TABLE Sales
 		on delete cascade
 	);
 
+CREATE VIEW genre_sales AS
+	SELECT genre, COUNT(genre)
+	FROM sales natural join book natural join book_genre
+	GROUP BY genre;
 
+CREATE VIEW author_sales AS
+	SELECT name, COUNT(name)
+	FROM sales natural join book natural join (writes natural join author)
+	GROUP BY name;
+
+CREATE VIEW total_sales AS
+	SELECT SUM(quantity)
+	FROM sales;
 
 
 
