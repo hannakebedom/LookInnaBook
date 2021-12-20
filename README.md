@@ -16,7 +16,9 @@ Your go-to command-line bookstore. 📚🌱
 6. In the `initialize()` method in the`model.rb` file in the repository change the password to your PostgreSQL password where it says `'insert your password here'`
 ![intialize method](initialize.png)
 7. In the terminal run `bundle install` to install all dependencies required to run this project
-8. In the terminal run `rake` to begin using the application.
+8. In the terminal run `rake` to begin using the application.  
+
+**Note: ** If you need help with the set up process please don't hesitate to contact me at [hannakebedom@cmail.carleton.ca](hannakebedom@cmail.carleton.ca)
 
 ## How to use LookInnaBook
 Login or create an account. Here is the login menu:  
@@ -62,7 +64,7 @@ You may remove a book to your store's offering by entering the isbn of the book.
 
 ### View Reports
 When you choose to view reports, you will be met with a report menu. Select the report you would like to view.
-Note: These reports are based on a database that has been used for several purchases. To see meaningful reports you will have to buy a few books with the customer account first
+Note: These reports are based on a database that has been used for several purchases. To see meaningful reports you will have to buy a few books with the customer account first  
 <img width="634" alt="report_menu" src="https://user-images.githubusercontent.com/61071004/146704994-6d2c2d42-2214-4ca3-bd90-5eb057222ad1.png">  
 For example, here is the report that displays sales by genre.  
 <img width="637" alt="sales_by_genre" src="https://user-images.githubusercontent.com/61071004/146705309-cf5898fd-47cd-4c02-885d-67d704fe31b6.png">  
