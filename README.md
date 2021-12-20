@@ -2,8 +2,8 @@
 Your go-to command-line bookstore. 📚🌱
 
 ## Technologies
-  - Ruby
-  - PostgreSQL
+  - [Ruby](https://ruby-doc.org/)
+  - [PostgreSQL](https://www.postgresql.org/docs/14/index.html)
 
 ## How to Run the LookInnaBook Command-Line Application
 1. Clone this GitHub Repository
@@ -72,8 +72,3 @@ Here is the report that display sales by author.
 <img width="637" alt="sales_by_author" src="https://user-images.githubusercontent.com/61071004/146705460-e63d2a32-9945-444b-87f5-7f41fe74d45e.png">  
 Here is the report that displays total sales.  
 <img width="637" alt="total_sales" src="https://user-images.githubusercontent.com/61071004/146705602-cd6acdd0-6250-44d9-97ea-73e20d211c9e.png">  
-
-
-
-
-
