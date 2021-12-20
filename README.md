@@ -62,6 +62,7 @@ You may remove a book to your store's offering by entering the isbn of the book.
 
 ### View Reports
 When you choose to view reports, you will be met with a report menu. Select the report you would like to view.
+Note: These reports are based on a database that has been used for several purchases. To see meaningful reports you will have to buy a few books with the customer account first
 <img width="634" alt="report_menu" src="https://user-images.githubusercontent.com/61071004/146704994-6d2c2d42-2214-4ca3-bd90-5eb057222ad1.png">  
 For example, here is the report that displays sales by genre.  
 <img width="637" alt="sales_by_genre" src="https://user-images.githubusercontent.com/61071004/146705309-cf5898fd-47cd-4c02-885d-67d704fe31b6.png">  
