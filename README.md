@@ -18,7 +18,7 @@ Your go-to command-line bookstore. 📚🌱
 7. In the terminal run `bundle install` to install all dependencies required to run this project
 8. In the terminal run `rake` to begin using the application.  
 
-**Note: ** If you need help with the set up process please don't hesitate to contact me at [hannakebedom@cmail.carleton.ca](hannakebedom@cmail.carleton.ca)
+**Note:** If you need help with the set up process please don't hesitate to contact me at [hannakebedom@cmail.carleton.ca](hannakebedom@cmail.carleton.ca)
 
 ## How to use LookInnaBook
 Login or create an account. Here is the login menu:  
