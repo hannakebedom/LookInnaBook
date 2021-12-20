@@ -1,4 +1,4 @@
-CREATE TABLE Customer
+CREATE TABLE customer
 	(customer_id SERIAL,
 	 name       varchar(50),
 	 address    varchar(50),
@@ -8,195 +8,196 @@ CREATE TABLE Customer
 	 PRIMARY KEY (customer_id)
 	);
 
-CREATE TABLE Owner
+CREATE TABLE owner
     (owner_id   SERIAL,
 	 name       varchar(50),
 	 address    varchar(40),
 	 PRIMARY KEY (owner_id)
 	);
 
-CREATE TABLE Account
+CREATE TABLE account
     (username   varchar(20),
 	 password   varchar(20),
 	 type       varchar(10),
 	 PRIMARY KEY (username)
 	);
 
-CREATE TABLE Orders
+CREATE TABLE orders
     (order_id   SERIAL,
 	 order_date       date,
 	 status     varchar(40),
 	 PRIMARY KEY (order_id)
 	);
 
-CREATE TABLE Cart
+CREATE TABLE cart
     (cart_id SERIAL,
 	 PRIMARY KEY (cart_id)
 	);
 
-CREATE TABLE Book
-    (isbn int UNIQUE,
+CREATE TABLE book
+    (isbn bigint UNIQUE,
      title varchar(40),
      description text,
-     pages int,
-     year_published int,
+     pages bigint,
+     year_published bigint,
+     price money,
 	 PRIMARY KEY (isbn)
 	);
 
-CREATE TABLE Genre
+CREATE TABLE genre
     (name varchar(20) UNIQUE,
 	 PRIMARY KEY (name)
 	);
 
-CREATE TABLE Publisher
+CREATE TABLE publisher
     (publisher_id SERIAL,
      name varchar(50),
      address varchar(40),
-     email varchar(20),
-     phone varchar(10),
-     bank_account_no varchar(10),
+     email varchar(40),
+     phone varchar(20),
+     bank_account_no varchar(20),
 	 PRIMARY KEY (publisher_id)
 	);
 
-CREATE TABLE Author
+CREATE TABLE author
     (author_id SERIAL,
      name varchar(50),
      bio text,
 	 PRIMARY KEY (author_id)
 	);
 
-CREATE TABLE Warehouse
+CREATE TABLE warehouse
     (number SERIAL,
      address varchar(40),
-     phone varchar(10),
+     phone varchar(20),
 	 PRIMARY KEY (number)
 	);
 
-CREATE TABLE Store
+CREATE TABLE store
     (store_id SERIAL,
      name varchar(50),
-     address varchar(10),
+     address varchar(40),
 	 PRIMARY KEY (store_id)
 	);
 
-CREATE TABLE Bank_Account
-    (account_number SERIAL,
-     balance int,
+CREATE TABLE bank_account
+    (account_number bigint,
+     balance bigint,
 	 PRIMARY KEY (account_number)
 	);
 
-CREATE TABLE Owner_Account
+CREATE TABLE owner_account
     (username varchar(20),
-     owner_id int,
+     owner_id bigint,
 	 PRIMARY KEY (username),
-     FOREIGN KEY (username) references Account
+     FOREIGN KEY (username) references account
 		on delete cascade,
-     FOREIGN KEY (owner_id) references Owners
+     FOREIGN KEY (owner_id) references owner
 		on delete cascade
 	);
 
-CREATE TABLE Customer_Account
+CREATE TABLE customer_account
     (username varchar(20),
-     customer_id int,
+     customer_id bigint,
 	 PRIMARY KEY (username),
-     FOREIGN KEY (username) references Account
+     FOREIGN KEY (username) references account
 		on delete cascade,
-     FOREIGN KEY (customer_id) references Customer
+     FOREIGN KEY (customer_id) references customer
 		on delete cascade
 	);
 
-CREATE TABLE Places
-    (order_id    int,
+CREATE TABLE places
+    (order_id    bigint,
      username    varchar(20),
 	 PRIMARY KEY (order_id),
-     FOREIGN KEY (order_id) references Orders
+     FOREIGN KEY (order_id) references orders
 		on delete cascade,
-     FOREIGN KEY (username) references Account
+     FOREIGN KEY (username) references account
 		on delete cascade
 	);
 
-CREATE TABLE Manages
-    (cart_id    int,
+CREATE TABLE manages
+    (cart_id    bigint,
      username   varchar(20),
 	 PRIMARY KEY (cart_id),
-     FOREIGN KEY (cart_id) references Cart
+     FOREIGN KEY (cart_id) references cart
 		on delete cascade,
-     FOREIGN KEY (username) references Account
+     FOREIGN KEY (username) references account
 		on delete cascade
 	);
 
-CREATE TABLE Contains
-    (cart_id    int,
+CREATE TABLE contains
+    (cart_id    bigint,
      isbn       bigint,
-     quantity   int,  
+     quantity   bigint,  
 	 PRIMARY KEY (cart_id, isbn),
-     FOREIGN KEY (cart_id) references Cart
+     FOREIGN KEY (cart_id) references cart
 		on delete cascade,
-     FOREIGN KEY (isbn) references Book
+     FOREIGN KEY (isbn) references book
 		on delete cascade
 	);
 
-CREATE TABLE Writes
-    (author_id  int,
-     isbn       int,
-	 PRIMARY KEY (author_id, isbn),
-     FOREIGN KEY (author_id) references Author
-		on delete cascade,
-     FOREIGN KEY (isbn) references Book
-		on delete cascade
-	);
-
-CREATE TABLE Publishes
-    (publisher_id  int,
-     isbn          int,
-	 PRIMARY KEY (publisher_id, isbn),
-     FOREIGN KEY (publisher_id) references Publisher
-		on delete cascade,
-     FOREIGN KEY (isbn) references Book
-		on delete cascade
-	);
-
-CREATE TABLE Warehouse_Book
-    (number  int,
-     isbn    int,
-     quantity int,
-	 PRIMARY KEY (number, isbn),
-     FOREIGN KEY (number) references Warehouse
-		on delete cascade,
-     FOREIGN KEY (isbn) references Book
-		on delete cascade
-	);
-
-CREATE TABLE Store_Book
-    (store_id  int,
-     isbn      int,
-     quantity  int,
-	 PRIMARY KEY (store_id, isbn),
-     FOREIGN KEY (store_id) references Store
-		on delete cascade,
-     FOREIGN KEY (isbn) references Book
-		on delete cascade
-	);
-
-CREATE TABLE Book_Genre
-    (isbn   int,
-     genre  varchar(20) UNIQUE,
-	 PRIMARY KEY (genre, isbn),
-     FOREIGN KEY (genre) references Genre
-		on delete cascade,
-     FOREIGN KEY (isbn) references Book
-		on delete cascade
-	);
-
-CREATE TABLE Sales
-    (cart_id    int,
+CREATE TABLE writes
+    (author_id  bigint,
      isbn       bigint,
-     quantity   int, 
+	 PRIMARY KEY (author_id, isbn),
+     FOREIGN KEY (author_id) references author
+		on delete cascade,
+     FOREIGN KEY (isbn) references book
+		on delete cascade
+	);
+
+CREATE TABLE publishes
+    (publisher_id  bigint,
+     isbn          bigint,
+	 PRIMARY KEY (publisher_id, isbn),
+     FOREIGN KEY (publisher_id) references publisher
+		on delete cascade,
+     FOREIGN KEY (isbn) references book
+		on delete cascade
+	);
+
+CREATE TABLE warehouse_book
+    (number  bigint,
+     isbn    bigint,
+     quantity bigint,
+	 PRIMARY KEY (number, isbn),
+     FOREIGN KEY (number) references warehouse
+		on delete cascade,
+     FOREIGN KEY (isbn) references book
+		on delete cascade
+	);
+
+CREATE TABLE store_book
+    (store_id  bigint,
+     isbn      bigint,
+     quantity  bigint,
+	 PRIMARY KEY (store_id, isbn),
+     FOREIGN KEY (store_id) references store
+		on delete cascade,
+     FOREIGN KEY (isbn) references book
+		on delete cascade
+	);
+
+CREATE TABLE book_genre
+    (isbn   bigint,
+     genre  varchar(20),
+	 PRIMARY KEY (genre, isbn),
+     FOREIGN KEY (genre) references genre
+		on delete cascade,
+     FOREIGN KEY (isbn) references book
+		on delete cascade
+	);
+
+CREATE TABLE sales
+    (cart_id    bigint,
+     isbn       bigint,
+     quantity   bigint, 
      date TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
 	 PRIMARY KEY (cart_id, isbn, date),
-     FOREIGN KEY (cart_id) references Cart
+     FOREIGN KEY (cart_id) references cart
 		on delete cascade,
-     FOREIGN KEY (isbn) references Book
+     FOREIGN KEY (isbn) references book
 		on delete cascade
 	);
 
@@ -213,19 +214,3 @@ CREATE VIEW author_sales AS
 CREATE VIEW total_sales AS
 	SELECT SUM(quantity)
 	FROM sales;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

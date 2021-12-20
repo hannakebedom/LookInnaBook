@@ -8,7 +8,7 @@ require 'date'
 class Model
     begin
         def initialize()
-            @con = PG.connect :dbname => 'bookstore', :user => 'postgres', :password => 'Oranges224'
+            @con = PG.connect :dbname => 'bookstore', :user => 'postgres', :password => 'insert your password here'
         end
 
         def login(account) #boolean ✅
@@ -120,22 +120,23 @@ class Model
 
 
         def cart_exists?(username) # ✅
-            begin
+            # begin
                 rs = @con.exec "SELECT COUNT(cart_id) FROM manages WHERE username=\'#{username}\'";
                 rs[0]["count"].to_i > 0 ? true : false
-            rescue => exception
-                puts "Oh no! An error occurred when accessing the database, please try again!".red
-                return false
-            end
+            # rescue => exception
+            #     puts "1"
+            #     puts "Oh no! An error occurred when accessing the database, please try again!".red
+            #     return false
+            # end
         end
 
         def retrieve_cart(username) # ✅
-            begin
+            # begin
                 rs = @con.exec "SELECT cart_id FROM manages WHERE username=\'#{username}\'";
                 return rs[0]["cart_id"].to_i
-            rescue => exception
-                puts "Oh no! An error occurred when accessing the database, please try again!".red
-            end
+            # rescue => exception
+            #     puts "Oh no! An error occurred when accessing the database, please try again!".red
+            # end
         end
 
         def create_cart # ✅
@@ -151,7 +152,7 @@ class Model
         def get_cart_id # ✅
             begin
                 rs = @con.exec "SELECT MAX(cart_id) FROM cart"
-                return true
+                return rs[0]["max"].to_i
             rescue => exception
                 puts "Oh no! An error occurred when accessing the database, please try again!".red
                 return false
@@ -169,17 +170,17 @@ class Model
         end
 
         def book_in_cart?(cart_id, isbn) # ✅
-            begin
+            # begin
                 rs = @con.exec "SELECT COUNT(*) FROM contains WHERE cart_id=#{cart_id} AND isbn=#{isbn}"
                 if rs[0]["count"].to_i > 0
                     return true
                 else
                     return false
                 end
-            rescue => exception
-                puts "Oh no! An error occurred when accessing the database, please try again!".red
-                return false
-            end
+            # rescue => exception
+            #     puts "Oh no! An error occurred when accessing the database, please try again!".red
+            #     return false
+            # end
         end
 
         def add_to_cart(cart_id, isbn, quantity) # ✅

@@ -16,6 +16,7 @@ delete from publisher;
 delete from publishes;
 delete from store;
 delete from store_book;
+delete from sales;
 delete from warehouse;
 delete from warehouse_book;
 delete from writes;
@@ -81,16 +82,31 @@ insert into writes values (2, 9780333791035);
 insert into writes values (3, 9780486280615);
 
 -- publishers
+insert into publisher(name, address, email, phone, bank_account_no) values ('Penguin Books', '8 Viaduct Gardens, London', 'global@penguinrandomhouse.com', '1-800-733-3000', '4003830171874018');
+insert into publisher(name, address, email, phone, bank_account_no) values ('Charles Scribners Sons', '157 Fifth Avenue, New York City', 'publish@scribner.com', '1-800-877-4253', '5496198584584769');
+insert into publisher(name, address, email, phone, bank_account_no) values ('Webster and Company', '134 Elloy Avnue, New York City', 'publish@webster.com', '1-800-866-5553', '6011000990139424');
 
 -- relationship between publishers and books
+insert into publishes values (1, 9780744525021);
+insert into publishes values (2, 9780333791035);
+insert into publishes values (3, 9780486280615);
+
+-- bank accounts
+insert into bank_account values (4003830171874018, 50000000);
+insert into bank_account values (5496198584584769, 30000000);
+insert into bank_account values (6011000990139424, 10000000);
 
 -- store
 insert into store(name, address) values ('Look Inna Book', '125 Riocan Ave.');
 
 -- books in store (quantity)
-insert into store_book(store_id, isbn, quantity) values (1, 9780744525021, 10);
-insert into store_book(store_id, isbn, quantity) values (1, 9780333791035, 10);
-insert into store_book(store_id, isbn, quantity) values (1, 9780486280615, 10);
+insert into store_book(store_id, isbn, quantity) values (1, 9780744525021, 50);
+insert into store_book(store_id, isbn, quantity) values (1, 9780333791035, 50);
+insert into store_book(store_id, isbn, quantity) values (1, 9780486280615, 50);
 
+-- warehouse
+insert into warehouse(address, phone) values ('1 Storage Street', '1-800-936-3574');
 
-
+insert into warehouse_book(number, isbn, quantity) values (1, 9780744525021, 100);
+insert into warehouse_book(number, isbn, quantity) values (1, 9780333791035, 100);
+insert into warehouse_book(number, isbn, quantity) values (1, 9780486280615, 100);

@@ -199,7 +199,7 @@ class View
 
         rs.each do |row|
             i += 1
-            puts "[#{i}] title: %s, price: %s, quantity: %s" % [ row['title'], row['price'], row['quantity']]
+            puts "[#{i}] title: %s, price: %s, quantity: %s".blue % [ row['title'], row['price'], row['quantity']]
         end
         puts "Total Number Items: #{i}"
         puts "Card:               #{card_number}"
