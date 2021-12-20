@@ -5,7 +5,7 @@ Your go-to command-line bookstore. 📚🌱
   - [Ruby](https://ruby-doc.org/)
   - [PostgreSQL](https://www.postgresql.org/docs/14/index.html)
 
-## How to Run the LookInnaBook Command-Line Application
+## Setup
 1. Clone this GitHub Repository
 2. Make sure you have PostgreSQL installed and configured on your machine.
   You can download it [here](https://www.postgresql.org/download/) if you don't already have it.
